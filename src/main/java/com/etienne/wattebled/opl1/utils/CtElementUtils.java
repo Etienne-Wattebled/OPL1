@@ -2,6 +2,7 @@ package com.etienne.wattebled.opl1.utils;
 
 import com.etienne.wattebled.opl1.filters.SearchOneCtElementFilter;
 
+import spoon.reflect.code.CtBlock;
 import spoon.reflect.code.CtDo;
 import spoon.reflect.code.CtFor;
 import spoon.reflect.code.CtForEach;
@@ -56,6 +57,16 @@ public class CtElementUtils {
 			return null;
 		}
 		if (parent.getVariable() == element) {
+			return parent;
+		}
+		return null;
+	}
+	public static CtBlock<?> getBlockWhichContains(CtElement element) {
+		CtBlock<?> parent = element.getParent(CtBlock.class);
+		if (parent == null) {
+			return null;
+		}
+		if (parent.getElements(new SearchOneCtElementFilter<CtElement>(element)).size() > 0) {
 			return parent;
 		}
 		return null;

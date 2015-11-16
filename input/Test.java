@@ -6,6 +6,9 @@ public class Test {
 		Boolean bool2 = false;
 		int a = 0;
 		Scanner sc = new Scanner(System.in);
+		if (sc != null) {
+			System.out.println("Lol");
+		}
 		int b = sc.nextInt();
 		if (b >= 8) {
 			b = b + 1;
@@ -22,6 +25,9 @@ public class Test {
 		System.out.println(tab.length);
 		for (int i = 0; i <= tab.length;i++) {
 			tab[i] = i;
+		}
+		for (int i: tab) {
+			System.out.println(i);
 		}
 		tab = null;
 		System.out.println(tab[0]);

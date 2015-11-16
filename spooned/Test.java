@@ -8,6 +8,9 @@ public class Test {
         java.lang.Boolean bool2 = false;
         int a = 0;
         java.util.Scanner sc = new java.util.Scanner(java.lang.System.in);
+        if (sc != null) {
+            java.lang.System.out.println("Lol");
+        } 
         int b = sc.nextInt();
         if (b >= 8) {
             b = b + 1;
@@ -24,6 +27,9 @@ public class Test {
         java.lang.System.out.println(tab.length);
         for (int i = 0 ; i <= (tab.length) ; i++) {
             tab[i] = i;
+        }
+        for (int i : tab) {
+            java.lang.System.out.println(i);
         }
         tab = null;
         java.lang.System.out.println(tab[0]);
