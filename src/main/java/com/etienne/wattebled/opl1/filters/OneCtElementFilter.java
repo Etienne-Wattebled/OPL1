@@ -4,10 +4,10 @@ package com.etienne.wattebled.opl1.filters;
 import spoon.reflect.declaration.CtElement;
 import spoon.reflect.visitor.Filter;
 
-public class SearchOneCtElementFilter<T extends CtElement> implements Filter<T> {
+public class OneCtElementFilter<T extends CtElement> implements Filter<T> {
 	private T element;
 	
-	public SearchOneCtElementFilter(T element) {
+	public OneCtElementFilter(T element) {
 		this.element = element;
 	}
 
