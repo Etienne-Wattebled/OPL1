@@ -95,7 +95,7 @@ public class ElementUtils {
 			return null;
 		}
 		CtElement courant = element;
-		while ((courant != null) && (!canBeReplaced(courant))) {
+		while ((courant != null) && (!canGenerateCodeAround(courant))) {
 			courant = courant.getParent();
 		}
 		return (courant == null)?null:(CtStatement)courant;
@@ -119,7 +119,7 @@ public class ElementUtils {
 		return null;
 	}
 	
-	public static boolean canBeReplaced(CtElement element) {
+	public static boolean canGenerateCodeAround(CtElement element) {
 		if (element == null) {
 			return false;
 		}
@@ -133,6 +133,9 @@ public class ElementUtils {
 			return false;
 		}
 		if (parent instanceof CtLocalVariable) {
+			return false;
+		}
+		if (parent instanceof CtFor) {
 			return false;
 		}
 		return true;

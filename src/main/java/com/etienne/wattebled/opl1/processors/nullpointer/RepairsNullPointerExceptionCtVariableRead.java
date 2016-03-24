@@ -11,7 +11,7 @@ import spoon.reflect.code.CtVariableRead;
 import com.etienne.wattebled.opl1.utils.ElementUtils;
 import com.etienne.wattebled.opl1.utils.VariableUtils;
 
-public class RepareNullPointerExceptionCtVariableRead extends AbstractProcessor<CtVariableRead<?>> {
+public class RepairsNullPointerExceptionCtVariableRead extends AbstractProcessor<CtVariableRead<?>> {
 	private CtStatement statement;
 	private CtBinaryOperator<Boolean> binaryOperatorBoolean;
 	
@@ -40,8 +40,6 @@ public class RepareNullPointerExceptionCtVariableRead extends AbstractProcessor<
 			/**
 			 * Sinon,il faut créer un nouveau if
 			 */
-			System.out.println(variable);
-			System.out.println("STATEMENT " + statement);
 			CtIf ctIf = getFactory().Core().createIf();
 			statement.replace(ctIf);
 			
