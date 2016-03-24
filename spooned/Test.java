@@ -9,7 +9,9 @@ public class Test {
             java.lang.System.out.println(a.length());
         } 
         java.lang.String[] tab = new java.lang.String[]{ "Bonjour" , "Bonsoir" };
-        java.lang.System.out.println(tab.length);
+        if (tab != null) {
+            java.lang.System.out.println(tab.length);
+        } 
         A objetA = new A();
         if (objetA != null) {
             objetA.a();
@@ -21,7 +23,9 @@ public class Test {
             int b = a.length();
         } 
         int c = 1 + 1;
-        int d = tab.length;
+        if (tab != null) {
+            int d = tab.length;
+        } 
     }
 
     public static void a() {
