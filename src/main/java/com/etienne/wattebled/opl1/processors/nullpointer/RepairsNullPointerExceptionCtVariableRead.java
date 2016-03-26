@@ -31,17 +31,16 @@ public class RepairsNullPointerExceptionCtVariableRead extends AbstractProcessor
 				|| CtVariableReadUtils.hasCellAccess(variable);
 	}
 	
-	public boolean arrayRead(CtVariableRead<?> variable, StringBuilder sb) {
+	public void arrayRead(CtVariableRead<?> variable, StringBuilder sb) {
 		CtElement parent = variable.getParent();
 		if (parent instanceof CtArrayRead) {
 			CtArrayRead<?> arrayRead = (CtArrayRead<?>) parent;
 			if ((!arrayRead.getType().isPrimitive()) && CtVariableReadUtils.hasAccesOn(arrayRead)) {
+				sb.append(" && (");
 				sb.append(arrayRead.toString());
-				sb.append(" != null");
-				return true;
+				sb.append(" != null)");
 			}
 		}
-		return false;
 	}
 	
 	public void process(CtVariableRead<?> variable) {
@@ -57,12 +56,10 @@ public class RepairsNullPointerExceptionCtVariableRead extends AbstractProcessor
 			sb.append("(");
 			sb.append(variable.getVariable().getSimpleName());
 			sb.append(" != null)");
+			
+			arrayRead(variable,sb);
+			
 			sb.append(" && (");
-			
-			if (arrayRead(variable,sb)) {
-				sb.append(") && (");
-			}
-			
 			sb.append(binaryOperatorBoolean.toString());
 			sb.append(")");
 			ctExpression.setValue(sb.toString());
@@ -83,11 +80,7 @@ public class RepairsNullPointerExceptionCtVariableRead extends AbstractProcessor
 			sb.append(" != null)");
 			
 			
-			if ((parent instanceof CtArrayRead) && ((!((CtArrayRead<?>) parent).getType().isPrimitive()) && CtVariableReadUtils.hasAccesOn(parent))) {
-				sb.append(" && (");
-				arrayRead(variable,sb);
-				sb.append(")");
-			}
+			arrayRead(variable,sb);
 			
 			ctExpression.setValue(sb.toString());
 			ctIf.setCondition(ctExpression);
