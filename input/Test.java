@@ -21,6 +21,18 @@ public class Test {
 		for (String s : tab) {
 			System.out.println(s);
 		}
+		if (tab == null) {
+			System.out.println("Bonjour");
+		}
+		if (tab[0] == null) {
+			System.out.println(tab[2]);
+		}
+		if (tab[2] == null) {
+			System.out.println("Bonsoir");
+		}
+		System.out.println(tab[2].length());
+		Integer t[] = new Integer[10];
+		System.out.println(t[2]);
 	}
 	public static void a() {
 		

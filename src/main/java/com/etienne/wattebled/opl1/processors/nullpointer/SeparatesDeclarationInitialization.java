@@ -9,14 +9,14 @@ import spoon.reflect.code.CtStatement;
 import spoon.reflect.declaration.CtElement;
 
 import com.etienne.wattebled.opl1.filters.AllCtElementFilter;
-import com.etienne.wattebled.opl1.utils.ElementUtils;
+import com.etienne.wattebled.opl1.utils.CtElementUtils;
 
 public class SeparatesDeclarationInitialization extends AbstractProcessor<CtLocalVariable<?>> {
 	private CtStatement statement;
 	private List<CtElement> elements;
 	
 	public boolean isToBeProcessed(CtLocalVariable<?> localVariable) {
-		statement = ElementUtils.getLastStatement(localVariable);
+		statement = CtElementUtils.getLastStatement(localVariable);
 		elements = localVariable.getElements(new AllCtElementFilter());
 		
 		if (elements.size() <= 1) {
