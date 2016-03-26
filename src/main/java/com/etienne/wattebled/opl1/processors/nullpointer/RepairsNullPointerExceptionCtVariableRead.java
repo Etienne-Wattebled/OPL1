@@ -31,60 +31,80 @@ public class RepairsNullPointerExceptionCtVariableRead extends AbstractProcessor
 				|| CtVariableReadUtils.hasCellAccess(variable);
 	}
 	
-	public void arrayRead(CtVariableRead<?> variable, StringBuilder sb) {
+	public void process(CtVariableRead<?> variable) {
+		boolean createIf = (binaryOperatorBoolean == null);
+		StringBuilder sb = new StringBuilder();
 		CtElement parent = variable.getParent();
+		CtIf ctIf = null;
+		CtBlock<?> ctBlock = null;
+		
+		/**
+		 * Dans le cas où il faut créer un nouveau if 
+		 * Ce qui signifie que la variable n'est pas dans une expression booléenne
+		 */
+		if (createIf) {
+			/**
+			 * Alors on le crée et dans le then c'est le code fautif et existant
+			 */
+			ctIf = getFactory().Core().createIf();
+			statement.replace(ctIf);
+			
+			ctBlock = getFactory().Core().createBlock();
+			ctBlock.addStatement(statement);
+			ctIf.setThenStatement(ctBlock);
+		}
+		/**
+		 * Dans tous les cas il faut créer une nouvelle expression pour ajouter quelque chose
+		 */
+		CtCodeSnippetExpression<Boolean> ctExpression = getFactory().Core().createCodeSnippetExpression();
+		
+		/**
+		 * On doit toujours tester que la variable est != null
+		 */
+		sb.append("(");
+		sb.append(variable.getVariable().getSimpleName());
+		sb.append(" != null)");
+		
+		/**
+		* Et on doit éventuellement ajouter tab[i] != null
+		*/
 		if (parent instanceof CtArrayRead) {
 			CtArrayRead<?> arrayRead = (CtArrayRead<?>) parent;
+			/**
+			 * Uniquement si tab[i] n'est pas primitif et si on accède à un attribut ou une méthode
+			 */
 			if ((!arrayRead.getType().isPrimitive()) && CtVariableReadUtils.hasAccesOn(arrayRead)) {
 				sb.append(" && (");
 				sb.append(arrayRead.toString());
 				sb.append(" != null)");
 			}
 		}
-	}
-	
-	public void process(CtVariableRead<?> variable) {
+		
 		/**
-		 * Dans le cas où la variable est dans une expression booléenne
-		 * Alors, on ajoute un test dans la condition pour tester si elle est == null
+		 * Si le if n'était pas à créer, alors ce qui
+		 * pouvait déclencher un NullPointer était dans une condition
+		 * donc il faut remettre la partie existante à la fin de l'expression
 		 */
-		StringBuilder sb = new StringBuilder();
-		CtElement parent = variable.getParent();
-		if (binaryOperatorBoolean != null) {
-			CtCodeSnippetExpression<Boolean> ctExpression = getFactory().Core().createCodeSnippetExpression();
-			
-			sb.append("(");
-			sb.append(variable.getVariable().getSimpleName());
-			sb.append(" != null)");
-			
-			arrayRead(variable,sb);
-			
+		if (!createIf) {
 			sb.append(" && (");
 			sb.append(binaryOperatorBoolean.toString());
 			sb.append(")");
-			ctExpression.setValue(sb.toString());
-			binaryOperatorBoolean.replace(ctExpression);
+		}
+		/**
+		 * La nouvelle expression est terminée.
+		 */
+		ctExpression.setValue(sb.toString());
+			
+		if (createIf) {
+			/**
+			 * Si le if était à créer il suffit de la mettre dans la condition du if
+			 */
+			ctIf.setCondition(ctExpression);
 		} else {
 			/**
-			 * Sinon,il faut créer un nouveau if
+			 * Sinon, il suffit de remplacer l'expression concernée
 			 */
-			CtIf ctIf = getFactory().Core().createIf();
-			statement.replace(ctIf);
-			
-			CtBlock<?> ctBlock = getFactory().Core().createBlock();
-			ctBlock.addStatement(statement);
-			
-			CtCodeSnippetExpression<Boolean> ctExpression = getFactory().Core().createCodeSnippetExpression();
-			sb.append("(");
-			sb.append(variable.getVariable().getSimpleName());
-			sb.append(" != null)");
-			
-			
-			arrayRead(variable,sb);
-			
-			ctExpression.setValue(sb.toString());
-			ctIf.setCondition(ctExpression);
-			ctIf.setThenStatement(ctBlock);
+			binaryOperatorBoolean.replace(ctExpression);
 		}
 	}
 }
