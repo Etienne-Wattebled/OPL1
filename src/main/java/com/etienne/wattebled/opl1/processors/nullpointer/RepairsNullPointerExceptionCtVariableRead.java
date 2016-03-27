@@ -19,14 +19,14 @@ public class RepairsNullPointerExceptionCtVariableRead extends AbstractProcessor
 	
 	public boolean isToBeProcessed(CtVariableRead<?> variable) {
 		statement = CtElementUtils.getLastStatement(variable);
-		binaryOperatorBoolean = (CtBinaryOperator<Boolean>) CtElementUtils.getLastBinaryOperatorBoolean(variable);
+		binaryOperatorBoolean = CtElementUtils.getLastBinaryOperatorBoolean(variable);
 		return (!variable.getVariable().getType().isPrimitive())
 				&& (CtVariableReadUtils.isAVariable(variable) 
 				&& isToBeProcessedNullPointer(variable));
 	}
 	
 	private boolean isToBeProcessedNullPointer(CtVariableRead<?> variable) {
-		return CtVariableReadUtils.hasAccesOn(variable)
+		return CtVariableReadUtils.hasAttributOrMethodAccessOn(variable)
 				|| CtVariableReadUtils.hasForEachAccess(variable)
 				|| CtVariableReadUtils.hasCellAccess(variable);
 	}
@@ -37,7 +37,6 @@ public class RepairsNullPointerExceptionCtVariableRead extends AbstractProcessor
 		CtElement parent = variable.getParent();
 		CtIf ctIf = null;
 		CtBlock<?> ctBlock = null;
-		
 		/**
 		 * Dans le cas où il faut créer un nouveau if 
 		 * Ce qui signifie que la variable n'est pas dans une expression booléenne
@@ -73,7 +72,7 @@ public class RepairsNullPointerExceptionCtVariableRead extends AbstractProcessor
 			/**
 			 * Uniquement si tab[i] n'est pas primitif et si on accède à un attribut ou une méthode
 			 */
-			if ((!arrayRead.getType().isPrimitive()) && CtVariableReadUtils.hasAccesOn(arrayRead)) {
+			if ((!arrayRead.getType().isPrimitive()) && CtVariableReadUtils.hasAttributOrMethodAccessOn(arrayRead)) {
 				sb.append(" && (");
 				sb.append(arrayRead.toString());
 				sb.append(" != null)");

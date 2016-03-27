@@ -31,10 +31,13 @@ public class CtVariableReadUtils {
 		}
 		CtElement parent = variableRead.getParent();
 		if (parent instanceof CtInvocation) {
-			List<CtElement> elements = parent.getElements(new AllCtElementFilter());
+			List<CtElement> elements = parent.getElements(new AllCtElementFilter(parent));
 			if (!elements.isEmpty()) {
-				return (elements.size() >= 1) && (elements.get(0) == variableRead)
+				/**
+				 return (elements.size() >= 1) && (elements.get(0) == variableRead)
 						|| ((elements.size() >= 2) && (elements.get(1) == variableRead));
+						**/
+				return (elements.size() >= 1) && (elements.get(0) == variableRead);
 			}
 		}
 		return false;
@@ -47,7 +50,7 @@ public class CtVariableReadUtils {
 		CtElement parent = variableRead.getParent();
 
 		if (parent instanceof CtFieldAccess) {
-			List<CtElement> elements = parent.getElements(new AllCtElementFilter());
+			List<CtElement> elements = parent.getElements(new AllCtElementFilter(parent));
 			if (!elements.isEmpty()) {
 				return (elements.size() >= 1) && (elements.get(0) == variableRead)
 						|| ((elements.size() >= 2) && (elements.get(1) == variableRead));
@@ -61,7 +64,7 @@ public class CtVariableReadUtils {
 		}
 		CtElement parent = variableRead.getParent();
 		if (parent instanceof CtForEach) {
-			List<CtElement> elements = parent.getElements(new AllCtElementFilter());
+			List<CtElement> elements = parent.getElements(new AllCtElementFilter(parent));
 			if (!elements.isEmpty()) {
 				 return elements.contains(variableRead);
 			}
@@ -75,7 +78,7 @@ public class CtVariableReadUtils {
 		CtElement parent = variableRead.getParent();
 		if (parent instanceof CtArrayRead) {
 			CtArrayRead<?> arrayRead = (CtArrayRead<?>) parent;
-			List<CtElement> elements = parent.getElements(new AllCtElementFilter());
+			List<CtElement> elements = parent.getElements(new AllCtElementFilter(parent));
 			if (!elements.isEmpty()) {
 				return elements.contains(variableRead);		
 			}
@@ -83,7 +86,7 @@ public class CtVariableReadUtils {
 		return false;
 	}
 	
-	public static boolean hasAccesOn(CtElement variable) {
+	public static boolean hasAttributOrMethodAccessOn(CtElement variable) {
 		return hasMethodCalledOn(variable) || hasAttributAccessOn(variable);
 	}
 }

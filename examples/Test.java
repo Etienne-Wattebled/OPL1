@@ -1,7 +1,7 @@
 
 public class Test {
 	public static void main(String args[]) {
-		String a = "Toto";
+		String a = null;
 		System.out.println(a.length());
 		String tab[] = {"Bonjour", "Bonsoir"};
 		System.out.println(tab.length);
@@ -33,8 +33,13 @@ public class Test {
 		System.out.println(tab[2].length());
 		Integer t[] = new Integer[10];
 		System.out.println(t[2]);
+		String o[][] = new String[10][10];
+		int k =0;
+		int l = 0;
+		System.out.println(o[1][3]);
+		System.out.println(o[k][l]);
 	}
-	public static void a() {
-		
+	public static int a() {
+		return 5;
 	}
 }

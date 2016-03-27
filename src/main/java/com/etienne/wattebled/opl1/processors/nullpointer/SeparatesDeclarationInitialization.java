@@ -17,9 +17,9 @@ public class SeparatesDeclarationInitialization extends AbstractProcessor<CtLoca
 	
 	public boolean isToBeProcessed(CtLocalVariable<?> localVariable) {
 		statement = CtElementUtils.getLastStatement(localVariable);
-		elements = localVariable.getElements(new AllCtElementFilter());
+		elements = localVariable.getElements(new AllCtElementFilter(localVariable));
 		
-		if (elements.size() <= 1) {
+		if (elements.size() < 1) {
 			return false;
 		}
 		return true;

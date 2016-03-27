@@ -5,9 +5,17 @@ import spoon.reflect.code.CtVariableRead;
 import spoon.reflect.declaration.CtElement;
 import spoon.reflect.visitor.Filter;
 
-public class AllCtVariableReadFilter<T extends CtElement> implements Filter<T> {
-	public boolean matches(T element) {
-		return (element instanceof CtVariableRead);
+public class AllCtVariableReadFilter implements Filter<CtVariableRead<?>> {
+	private CtElement parent;
+	public AllCtVariableReadFilter() {	
+	}
+	
+	public AllCtVariableReadFilter(CtElement parent) {
+		this.parent = parent;
+	}
+	
+	public boolean matches(CtVariableRead<?> element) {
+		return (parent == null) || (element.getParent() == parent);
 	}
 	
 }

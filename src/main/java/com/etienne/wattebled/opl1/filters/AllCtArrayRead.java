@@ -1,18 +1,18 @@
 package com.etienne.wattebled.opl1.filters;
 
+
+import spoon.reflect.code.CtArrayRead;
 import spoon.reflect.declaration.CtElement;
 import spoon.reflect.visitor.Filter;
 
-public class AllCtElementFilter implements Filter<CtElement> {
+public class AllCtArrayRead implements Filter<CtArrayRead<?>> {
 	private CtElement parent;
 	
-	public AllCtElementFilter(CtElement parent) {
+	public AllCtArrayRead(CtElement parent) {
 		this.parent = parent;
 	}
-	public AllCtElementFilter() {
-	}
-	
-	public boolean matches(CtElement element) {
+	public boolean matches(CtArrayRead<?> element) {
 		return (parent == null) || (element.getParent() == parent);
 	}
+	
 }

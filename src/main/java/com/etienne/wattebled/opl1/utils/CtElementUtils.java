@@ -25,7 +25,7 @@ public class CtElementUtils {
 		return (courant == null)?null:(CtStatement)courant;
 	}
 	
-	public static CtBinaryOperator<?> getLastBinaryOperatorBoolean(CtElement element) {
+	public static CtBinaryOperator<Boolean> getLastBinaryOperatorBoolean(CtElement element) {
 		if (element == null) {
 			return null;
 		}
@@ -38,7 +38,7 @@ public class CtElementUtils {
 			return null;
 		}
 		if (binaryOperator.getType().getSimpleName().toUpperCase().equals("BOOLEAN")) {
-			return binaryOperator;
+			return (CtBinaryOperator<Boolean>) binaryOperator;
 		}
 		return null;
 	}
