@@ -30,20 +30,16 @@ public class RepairsArrayOutOfBoundExceptionCtArrayRead extends AbstractProcesso
 		}
 		variableTab = elements.get(0);
 		indiceTab = elements.get(1);
-		System.out.println("variableTab: "+variableTab);
-		System.out.println("indiceTab: "+indiceTab);
 		return true;
 	}
 	
 	public void process(CtArrayRead<?> element) {
 
-		boolean createIf = (binaryOperator == null);
 		StringBuilder sb = null;
 		sb=new StringBuilder();
 		CtIf ctIf = null;
 		CtBlock<?> ctBlock = null;
-		System.out.println("1");
-		if (createIf) {
+
 			ctIf =  getFactory().Core().createIf();
 
 			statement.replace(ctIf);
@@ -52,11 +48,8 @@ public class RepairsArrayOutOfBoundExceptionCtArrayRead extends AbstractProcesso
 			ctBlock.addStatement(statement);
 			ctIf.setThenStatement(ctBlock);
 
-		}
-		System.out.println("2");
 
 		CtCodeSnippetExpression<Boolean> ctExpression = getFactory().Core().createCodeSnippetExpression();
-		System.out.println("3");
 		sb.append("((");
 		sb.append(indiceTab.toString());
 		sb.append(" >= 0) && (");
@@ -65,22 +58,11 @@ public class RepairsArrayOutOfBoundExceptionCtArrayRead extends AbstractProcesso
 		sb.append(variableTab);
 		sb.append(".length)");
 		sb.append(")");
-		if (!createIf) {
-			System.out.println("4");
-			sb.append(" && (");
-			sb.append(binaryOperator.toString());
-			sb.append(")");
-		}
-		ctExpression.setValue(sb.toString());
-		System.out.println("expression : "+sb.toString());
 		
-		if (createIf) {
-			ctIf.setCondition(ctExpression);
-		} else {
-			binaryOperator.replace(ctExpression);
-		}
-		System.out.println("5");
-		System.out.println("BINARY OPERATOR " + " ctExpression: "+ctExpression);
+		ctExpression.setValue(sb.toString());
+		
+		ctIf.setCondition(ctExpression);
+
 	}
 		
 }
