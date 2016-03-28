@@ -38,12 +38,12 @@ public class RepairsNullPointerExceptionCtVariableRead extends AbstractProcessor
 		CtIf ctIf = null;
 		CtBlock<?> ctBlock = null;
 		/**
-		 * Dans le cas où il faut créer un nouveau if 
-		 * Ce qui signifie que la variable n'est pas dans une expression booléenne
+		 * Dans le cas oï¿½ il faut crï¿½er un nouveau if 
+		 * Ce qui signifie que la variable n'est pas dans une expression boolï¿½enne
 		 */
 		if (createIf) {
 			/**
-			 * Alors on le crée et dans le then c'est le code fautif et existant
+			 * Alors on le crï¿½e et dans le then c'est le code fautif et existant
 			 */
 			ctIf = getFactory().Core().createIf();
 			statement.replace(ctIf);
@@ -53,7 +53,7 @@ public class RepairsNullPointerExceptionCtVariableRead extends AbstractProcessor
 			ctIf.setThenStatement(ctBlock);
 		}
 		/**
-		 * Dans tous les cas il faut créer une nouvelle expression pour ajouter quelque chose
+		 * Dans tous les cas il faut crï¿½er une nouvelle expression pour ajouter quelque chose
 		 */
 		CtCodeSnippetExpression<Boolean> ctExpression = getFactory().Core().createCodeSnippetExpression();
 		
@@ -65,24 +65,25 @@ public class RepairsNullPointerExceptionCtVariableRead extends AbstractProcessor
 		sb.append(" != null)");
 		
 		/**
-		* Et on doit éventuellement ajouter tab[i] != null
+		* Et on doit ï¿½ventuellement ajouter tab[i] != null
 		*/
-		if (parent instanceof CtArrayRead) {
-			CtArrayRead<?> arrayRead = (CtArrayRead<?>) parent;
+		CtArrayRead<?> racine = CtVariableReadUtils.gitFirstArrayRead(variable);
+		if (racine != null) {
+			CtArrayRead<?> arrayRead = (CtArrayRead<?>) racine;
 			/**
-			 * Uniquement si tab[i] n'est pas primitif et si on accède à un attribut ou une méthode
+			 * Uniquement si tab[i] n'est pas primitif et si on accï¿½de ï¿½ un attribut ou une mï¿½thode
 			 */
-			if ((!arrayRead.getType().isPrimitive()) && CtVariableReadUtils.hasAttributOrMethodAccessOn(arrayRead)) {
+			if ((!racine.getType().isPrimitive()) && CtVariableReadUtils.hasAttributOrMethodAccessOn(racine)) {
 				sb.append(" && (");
-				sb.append(arrayRead.toString());
+				sb.append(racine.toString());
 				sb.append(" != null)");
 			}
 		}
 		
 		/**
-		 * Si le if n'était pas à créer, alors ce qui
-		 * pouvait déclencher un NullPointer était dans une condition
-		 * donc il faut remettre la partie existante à la fin de l'expression
+		 * Si le if n'ï¿½tait pas ï¿½ crï¿½er, alors ce qui
+		 * pouvait dï¿½clencher un NullPointer ï¿½tait dans une condition
+		 * donc il faut remettre la partie existante ï¿½ la fin de l'expression
 		 */
 		if (!createIf) {
 			sb.append(" && (");
@@ -90,18 +91,18 @@ public class RepairsNullPointerExceptionCtVariableRead extends AbstractProcessor
 			sb.append(")");
 		}
 		/**
-		 * La nouvelle expression est terminée.
+		 * La nouvelle expression est terminï¿½e.
 		 */
 		ctExpression.setValue(sb.toString());
 			
 		if (createIf) {
 			/**
-			 * Si le if était à créer il suffit de la mettre dans la condition du if
+			 * Si le if ï¿½tait ï¿½ crï¿½er il suffit de la mettre dans la condition du if
 			 */
 			ctIf.setCondition(ctExpression);
 		} else {
 			/**
-			 * Sinon, il suffit de remplacer l'expression concernée
+			 * Sinon, il suffit de remplacer l'expression concernï¿½e
 			 */
 			binaryOperatorBoolean.replace(ctExpression);
 		}

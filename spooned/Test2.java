@@ -12,14 +12,14 @@ public class Test2 {
         b = 5;
         int c;
         c = 6;
-        if ((a >= 0) && (tab != null) && ((a < (tab.length)))) {
-            if ((b >= 0) && (tab != null) && (tab[a] != null) && ((b < (tab[a].length)))) {
-                if ((c >= 0) && (tab != null) && ((c < (tab[a][b].length)))) {
+        if (((a >= 0) && (a < tab.length))) {
+            if (((b >= 0) && (b < tab[a].length))) {
+                if (((c >= 0) && (c < tab[a][b].length))) {
                     if ((tab != null) && ((tab[a][b][c]) == null)) {
-                        if ((a >= 0) && (tab != null) && ((a < (tab.length)))) {
-                            if ((b >= 0) && (tab != null) && (tab[a] != null) && ((b < (tab[a].length)))) {
-                                if ((c >= 0) && (tab != null) && ((c < (tab[a][b].length)))) {
-                                    if ((tab != null)) {
+                        if (tab != null) {
+                            if (((a >= 0) && (a < tab.length))) {
+                                if (((b >= 0) && (b < tab[a].length))) {
+                                    if (((c >= 0) && (c < tab[a][b].length))) {
                                         java.lang.System.out.println(tab[a][b][c]);
                                     } 
                                 } 

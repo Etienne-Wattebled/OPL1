@@ -89,4 +89,14 @@ public class CtVariableReadUtils {
 	public static boolean hasAttributOrMethodAccessOn(CtElement variable) {
 		return hasMethodCalledOn(variable) || hasAttributAccessOn(variable);
 	}
+	
+	public static CtArrayRead<?> gitFirstArrayRead(CtVariableRead<?> variableRead) {
+		CtElement e = variableRead;
+		CtElement parent = variableRead.getParent();
+		while (parent instanceof CtArrayRead) {
+			e = parent;
+			parent = parent.getParent();
+		}
+		return (e instanceof CtArrayRead<?>)?(CtArrayRead<?>)e:null;
+	}
 }
