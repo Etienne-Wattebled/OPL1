@@ -4,7 +4,6 @@ import java.util.List;
 
 import spoon.processing.AbstractProcessor;
 import spoon.reflect.code.CtArrayRead;
-import spoon.reflect.code.CtBinaryOperator;
 import spoon.reflect.code.CtBlock;
 import spoon.reflect.code.CtCodeSnippetExpression;
 import spoon.reflect.code.CtIf;
@@ -16,14 +15,12 @@ import com.etienne.wattebled.opl1.filters.AllCtElementFilter;
 import com.etienne.wattebled.opl1.utils.CtElementUtils;
 
 public class RepairsArrayOutOfBoundExceptionCtArrayRead extends AbstractProcessor<CtArrayRead<?>> {
-	private CtBinaryOperator<Boolean> binaryOperator;
 	private CtStatement statement;
 	private CtElement indiceTab;
 	private CtElement variableTab;
 	private List<CtElement> elements;
 	
 	public boolean isToBeProcessed(CtArrayRead<?> element) {
-		binaryOperator = CtElementUtils.getLastBinaryOperatorBoolean(element);
 		statement = CtElementUtils.getLastStatement(element);
 		elements = element.getElements(new AllCtElementFilter(element));
 		if (elements.isEmpty() || elements.size() < 2) {
@@ -40,20 +37,18 @@ public class RepairsArrayOutOfBoundExceptionCtArrayRead extends AbstractProcesso
 	}
 	
 	public void process(CtArrayRead<?> element) {
-
 		StringBuilder sb = null;
 		sb=new StringBuilder();
 		CtIf ctIf = null;
 		CtBlock<?> ctBlock = null;
 
-			ctIf =  getFactory().Core().createIf();
+		ctIf =  getFactory().Core().createIf();
 
-			statement.replace(ctIf);
+		statement.replace(ctIf);
 
-			ctBlock = getFactory().Core().createBlock();
-			ctBlock.addStatement(statement);
-			ctIf.setThenStatement(ctBlock);
-
+		ctBlock = getFactory().Core().createBlock();
+		ctBlock.addStatement(statement);
+		ctIf.setThenStatement(ctBlock);
 
 		CtCodeSnippetExpression<Boolean> ctExpression = getFactory().Core().createCodeSnippetExpression();
 		sb.append("((");

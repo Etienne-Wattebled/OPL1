@@ -33,10 +33,6 @@ public class CtVariableReadUtils {
 		if (parent instanceof CtInvocation) {
 			List<CtElement> elements = parent.getElements(new AllCtElementFilter(parent));
 			if (!elements.isEmpty()) {
-				/**
-				 return (elements.size() >= 1) && (elements.get(0) == variableRead)
-						|| ((elements.size() >= 2) && (elements.get(1) == variableRead));
-						**/
 				return (elements.size() >= 1) && (elements.get(0) == variableRead);
 			}
 		}
@@ -77,7 +73,6 @@ public class CtVariableReadUtils {
 		}
 		CtElement parent = variableRead.getParent();
 		if (parent instanceof CtArrayRead) {
-			CtArrayRead<?> arrayRead = (CtArrayRead<?>) parent;
 			List<CtElement> elements = parent.getElements(new AllCtElementFilter(parent));
 			if (!elements.isEmpty()) {
 				return elements.contains(variableRead);		
