@@ -1,8 +1,10 @@
 
-public class A {
-	public int a = 5;
+public class A extends B {
 	
-	public void a() {
-		System.out.println("Bonjour ! " + a);
+	public A(A a) {
+		super(a.getA());
+	}
+	public int getA() {
+		return a;
 	}
 }

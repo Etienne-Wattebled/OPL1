@@ -2,11 +2,13 @@
 
 
 
-public class A {
-    public int a = 5;
+public class A extends B {
+    public A(A a) {
+        super(a.getA());
+    }
 
-    public void a() {
-        java.lang.System.out.println(("Bonjour ! " + (a)));
+    public int getA() {
+        return a;
     }
 }
 

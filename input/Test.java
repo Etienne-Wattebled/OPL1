@@ -5,8 +5,8 @@ public class Test {
 		System.out.println(a.length());
 		String tab[] = {"Bonjour", "Bonsoir"};
 		System.out.println(tab.length);
-		A objetA = new A();
-		objetA.a();
+		A objetA = new A(null);
+		objetA.getA();
 		if (a.length() == 0) {
 			System.out.println("Bonjour");
 		}

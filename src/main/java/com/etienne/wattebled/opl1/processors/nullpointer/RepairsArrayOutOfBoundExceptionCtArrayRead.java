@@ -9,6 +9,7 @@ import spoon.reflect.code.CtBlock;
 import spoon.reflect.code.CtCodeSnippetExpression;
 import spoon.reflect.code.CtIf;
 import spoon.reflect.code.CtStatement;
+import spoon.reflect.declaration.CtConstructor;
 import spoon.reflect.declaration.CtElement;
 
 import com.etienne.wattebled.opl1.filters.AllCtElementFilter;
@@ -30,6 +31,11 @@ public class RepairsArrayOutOfBoundExceptionCtArrayRead extends AbstractProcesso
 		}
 		variableTab = elements.get(0);
 		indiceTab = elements.get(1);
+		
+		if (element.getParent(CtConstructor.class) != null) {
+			return false;
+		}
+		
 		return true;
 	}
 	

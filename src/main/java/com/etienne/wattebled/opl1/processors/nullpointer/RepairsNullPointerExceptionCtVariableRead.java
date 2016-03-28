@@ -8,6 +8,7 @@ import spoon.reflect.code.CtCodeSnippetExpression;
 import spoon.reflect.code.CtIf;
 import spoon.reflect.code.CtStatement;
 import spoon.reflect.code.CtVariableRead;
+import spoon.reflect.declaration.CtConstructor;
 import spoon.reflect.declaration.CtElement;
 
 import com.etienne.wattebled.opl1.utils.CtElementUtils;
@@ -26,6 +27,11 @@ public class RepairsNullPointerExceptionCtVariableRead extends AbstractProcessor
 	}
 	
 	private boolean isToBeProcessedNullPointer(CtVariableRead<?> variable) {
+		
+		if (variable.getParent(CtConstructor.class) != null) {
+			return false;
+		}
+		
 		return CtVariableReadUtils.hasAttributOrMethodAccessOn(variable)
 				|| CtVariableReadUtils.hasForEachAccess(variable)
 				|| CtVariableReadUtils.hasCellAccess(variable);
