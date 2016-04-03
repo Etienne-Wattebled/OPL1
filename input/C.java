@@ -1,7 +1,11 @@
+import java.util.LinkedList;
+
 
 public class C {
-	private C c;
-		
+	public C c;
+	private String s;
+	private C tab[];
+	
 	public C() {
 		this.c = null;
 	}
@@ -9,6 +13,15 @@ public class C {
 		this.c = c;
 	}
 	public C getC() {
-		return this.c;
+		return c.getC().getC();
+	}
+	public String getS() {
+		return this.s;
+	}
+	public C[] getTab() {
+		return tab;
+	}
+	public LinkedList<C> getAllC() {
+		return null;
 	}
 }

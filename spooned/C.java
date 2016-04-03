@@ -3,7 +3,11 @@
 
 
 public class C {
-    private C c;
+    public C c;
+
+    private java.lang.String s;
+
+    private C[] tab;
 
     public C() {
         this.c = null;
@@ -14,7 +18,19 @@ public class C {
     }
 
     public C getC() {
-        return this.c;
+        return c.getC().getC();
+    }
+
+    public java.lang.String getS() {
+        return this.s;
+    }
+
+    public C[] getTab() {
+        return tab;
+    }
+
+    public java.util.LinkedList<C> getAllC() {
+        return null;
     }
 }
 

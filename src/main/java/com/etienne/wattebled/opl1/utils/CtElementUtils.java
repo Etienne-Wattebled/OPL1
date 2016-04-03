@@ -2,12 +2,8 @@ package com.etienne.wattebled.opl1.utils;
 
 import java.util.List;
 
-import spoon.reflect.code.CtAssignment;
 import spoon.reflect.code.CtBinaryOperator;
-import spoon.reflect.code.CtFor;
-import spoon.reflect.code.CtForEach;
-import spoon.reflect.code.CtInvocation;
-import spoon.reflect.code.CtLocalVariable;
+import spoon.reflect.code.CtBlock;
 import spoon.reflect.code.CtStatement;
 import spoon.reflect.declaration.CtElement;
 
@@ -44,23 +40,7 @@ public class CtElementUtils {
 	}
 	
 	public static boolean canGenerateCodeAround(CtElement element) {
-		if (element == null) {
-			return false;
-		}
-		if (!(element instanceof CtStatement)) {
-			return false;
-		}
-		
 		CtElement parent = element.getParent();
-		if (parent instanceof CtInvocation) {
-			return false;
-		}
-		if ((parent instanceof CtLocalVariable) || (parent instanceof CtAssignment)) {
-			return false;
-		}
-		if ((parent instanceof CtFor) || (parent instanceof CtForEach)) {
-			return false;
-		}
-		return true;
+		return parent instanceof CtBlock;
 	}
 }

@@ -1,4 +1,4 @@
-package com.etienne.wattebled.opl1.processors.nullpointer;
+package com.etienne.wattebled.opl1.processors;
 
 import java.util.List;
 

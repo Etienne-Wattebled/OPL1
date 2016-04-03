@@ -1,4 +1,4 @@
-package com.etienne.wattebled.opl1.processors.nullpointer;
+package com.etienne.wattebled.opl1.processors;
 
 import java.util.List;
 
@@ -7,6 +7,7 @@ import spoon.reflect.code.CtArrayRead;
 import spoon.reflect.code.CtBlock;
 import spoon.reflect.code.CtCodeSnippetExpression;
 import spoon.reflect.code.CtIf;
+import spoon.reflect.code.CtReturn;
 import spoon.reflect.code.CtStatement;
 import spoon.reflect.declaration.CtConstructor;
 import spoon.reflect.declaration.CtElement;
@@ -30,6 +31,9 @@ public class RepairsArrayOutOfBoundExceptionCtArrayRead extends AbstractProcesso
 		indiceTab = elements.get(1);
 		
 		if (element.getParent(CtConstructor.class) != null) {
+			return false;
+		}
+		if (element.getParent(CtReturn.class) != null) {
 			return false;
 		}
 		

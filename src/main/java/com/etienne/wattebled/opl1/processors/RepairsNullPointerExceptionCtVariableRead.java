@@ -1,15 +1,16 @@
-package com.etienne.wattebled.opl1.processors.nullpointer;
+package com.etienne.wattebled.opl1.processors;
 
 import spoon.processing.AbstractProcessor;
-import spoon.reflect.code.CtArrayRead;
 import spoon.reflect.code.CtBinaryOperator;
 import spoon.reflect.code.CtBlock;
 import spoon.reflect.code.CtCodeSnippetExpression;
 import spoon.reflect.code.CtIf;
+import spoon.reflect.code.CtReturn;
 import spoon.reflect.code.CtStatement;
 import spoon.reflect.code.CtVariableRead;
 import spoon.reflect.declaration.CtConstructor;
 import spoon.reflect.declaration.CtElement;
+import spoon.reflect.declaration.CtTypedElement;
 
 import com.etienne.wattebled.opl1.utils.CtElementUtils;
 import com.etienne.wattebled.opl1.utils.CtVariableReadUtils;
@@ -31,10 +32,23 @@ public class RepairsNullPointerExceptionCtVariableRead extends AbstractProcessor
 		if (variable.getParent(CtConstructor.class) != null) {
 			return false;
 		}
+		if (variable.getParent(CtReturn.class) != null) {
+			return false;
+		}
 		
 		return CtVariableReadUtils.hasAttributOrMethodAccessOn(variable)
 				|| CtVariableReadUtils.hasForEachAccess(variable)
 				|| CtVariableReadUtils.hasCellAccess(variable);
+	}
+	
+	public void invocationsImbriquees(CtTypedElement<?> typedElement, StringBuilder sb) {
+		CtElement e = typedElement.getParent();
+		while ((e instanceof CtTypedElement) && (!((CtTypedElement<?>)e).getType().isPrimitive()) && (CtVariableReadUtils.hasAttributOrMethodAccessOn(e))) {
+			sb.append(" && (");
+			sb.append(e.toString());
+			sb.append(" != null)");
+			e = e.getParent();
+		}
 	}
 	
 	public void process(CtVariableRead<?> variable) {
@@ -67,24 +81,13 @@ public class RepairsNullPointerExceptionCtVariableRead extends AbstractProcessor
 		 * On doit toujours tester que la variable est != null
 		 */
 		sb.append("(");
-		sb.append(variable.getVariable().getSimpleName());
+		sb.append(variable.toString());
 		sb.append(" != null)");
 		
 		/**
-		* Et on doit �ventuellement ajouter tab[i] != null
-		*/
-		CtArrayRead<?> racine = CtVariableReadUtils.gitFirstArrayRead(variable);
-		if (racine != null) {
-			CtArrayRead<?> arrayRead = (CtArrayRead<?>) racine;
-			/**
-			 * Uniquement si tab[i] n'est pas primitif et si on acc�de � un attribut ou une m�thode
-			 */
-			if ((!racine.getType().isPrimitive()) && CtVariableReadUtils.hasAttributOrMethodAccessOn(racine)) {
-				sb.append(" && (");
-				sb.append(racine.toString());
-				sb.append(" != null)");
-			}
-		}
+		 * Possible qu'il y ait des imbrications de getters
+		 */
+		invocationsImbriquees(variable,sb);
 		
 		/**
 		 * Si le if n'�tait pas � cr�er, alors ce qui

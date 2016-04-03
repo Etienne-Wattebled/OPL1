@@ -14,11 +14,11 @@ public class Test2 {
         c = 6;
         if ((a >= 0) && (tab != null) && ((a < (tab.length)))) {
             if ((b >= 0) && (tab != null) && (tab[a] != null) && ((b < (tab[a].length)))) {
-                if ((c >= 0) && (tab != null) && (tab[a][b] != null) && ((c < (tab[a][b].length)))) {
+                if ((c >= 0) && (tab != null) && ((c < (tab[a][b].length)))) {
                     if ((tab != null) && ((tab[a][b][c]) == null)) {
                         if ((a >= 0) && (tab != null) && ((a < (tab.length)))) {
                             if ((b >= 0) && (tab != null) && (tab[a] != null) && ((b < (tab[a].length)))) {
-                                if ((c >= 0) && (tab != null) && (tab[a][b] != null) && ((c < (tab[a][b].length)))) {
+                                if ((c >= 0) && (tab != null) && ((c < (tab[a][b].length)))) {
                                     if ((tab != null)) {
                                         java.lang.System.out.println(tab[a][b][c]);
                                     } 
