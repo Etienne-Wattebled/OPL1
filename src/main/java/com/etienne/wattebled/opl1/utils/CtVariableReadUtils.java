@@ -22,7 +22,9 @@ public class CtVariableReadUtils {
 	}
 	
 	public static boolean isAVariable(CtVariableRead<?> variable) {
-		return (variable != null) && !(libraryVariables.contains(variable.getType().getQualifiedName()));
+		return (variable != null) && (!variable.getSignature().equals("super"))
+				&& (variable.getVariable() != null) && (variable.getType() != null)
+				&& !(libraryVariables.contains(variable.getType().getQualifiedName()));
 	}
 	
 	public static boolean hasMethodCalledOn(CtElement variableRead) {

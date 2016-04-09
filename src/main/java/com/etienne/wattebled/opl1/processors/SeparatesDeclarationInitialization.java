@@ -46,6 +46,18 @@ public class SeparatesDeclarationInitialization extends AbstractProcessor<CtLoca
 			sb.append(localVariable.getType());
 			sb.append(" ");
 			sb.append(localVariable.getSimpleName());
+			
+			sb.append(" ");
+			String type = localVariable.getType().getQualifiedName().toUpperCase();
+			if (localVariable.getType().isPrimitive()) {
+				if (type.equals("INT") || type.equals("DOUBLE") || type.equals("FLOAT") || type.equals("BYTE") || type.equals("LONG")) {
+					sb.append(" = 0");
+				} else if (type.equals("BOOLEAN")) {
+					sb.append(" = false");
+				}
+			} else {
+				sb.append(" = null");
+			}
 			declaration.setValue(sb.toString());
 			statement.insertBefore(declaration);
 			list.add(declaration);

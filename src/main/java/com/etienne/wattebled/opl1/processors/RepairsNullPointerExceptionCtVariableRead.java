@@ -22,13 +22,12 @@ public class RepairsNullPointerExceptionCtVariableRead extends AbstractProcessor
 	public boolean isToBeProcessed(CtVariableRead<?> variable) {
 		statement = CtElementUtils.getLastStatement(variable);
 		binaryOperatorBoolean = CtElementUtils.getLastBinaryOperatorBoolean(variable);
-		return (!variable.getVariable().getType().isPrimitive())
-				&& (CtVariableReadUtils.isAVariable(variable) 
+		return (CtVariableReadUtils.isAVariable(variable)
+				&& (!variable.getVariable().getType().isPrimitive())  
 				&& isToBeProcessedNullPointer(variable));
 	}
 	
 	private boolean isToBeProcessedNullPointer(CtVariableRead<?> variable) {
-		
 		if (variable.getParent(CtConstructor.class) != null) {
 			return false;
 		}

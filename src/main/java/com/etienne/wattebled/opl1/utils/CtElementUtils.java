@@ -9,6 +9,7 @@ import spoon.reflect.code.CtBinaryOperator;
 import spoon.reflect.code.CtBlock;
 import spoon.reflect.code.CtStatement;
 import spoon.reflect.declaration.CtElement;
+import spoon.reflect.declaration.CtMethod;
 
 import com.etienne.wattebled.opl1.filters.AllCtElementFilter;
 
@@ -62,9 +63,11 @@ public class CtElementUtils {
 	}
 	public static LinkedList<CtBlock<?>> getAllCtBlockParent(CtElement element) {
 		LinkedList<CtBlock<?>> result = new LinkedList<CtBlock<?>>();
-		CtBlock<?> parent = null;
-		while ((parent = element.getParent(CtBlock.class)) != null) {
-			result.add(parent);
+		CtElement parent = null;
+		while (((parent = element.getParent()) != null) && (!(parent instanceof CtMethod))) {
+			if (parent instanceof CtBlock) {
+				result.add((CtBlock<?>)parent);
+			}
 			element = parent;
 		}
 		return result;
