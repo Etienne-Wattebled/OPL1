@@ -46,23 +46,20 @@ public class SeparatesDeclarationInitialization extends AbstractProcessor<CtLoca
 			sb.append(localVariable.getType());
 			sb.append(" ");
 			sb.append(localVariable.getSimpleName());
-			
-			sb.append(" ");
+			sb.append(" = ");
 			String type = localVariable.getType().getQualifiedName().toUpperCase();
 			if (localVariable.getType().isPrimitive()) {
 				if (type.equals("INT") || type.equals("DOUBLE") || type.equals("FLOAT") || type.equals("BYTE") || type.equals("LONG")) {
-					sb.append(" = 0");
+					sb.append("0");
 				} else if (type.equals("BOOLEAN")) {
-					sb.append(" = false");
+					sb.append("false");
 				}
 			} else {
-				sb.append(" = null");
+				sb.append("null");
 			}
 			declaration.setValue(sb.toString());
 			statement.insertBefore(declaration);
-			list.add(declaration);
 		}
-
 		CtCodeSnippetStatement initialization = getFactory().Core().createCodeSnippetStatement();
 		sb = new StringBuilder();
 		sb.append(localVariable.getSimpleName());
@@ -71,5 +68,6 @@ public class SeparatesDeclarationInitialization extends AbstractProcessor<CtLoca
 		
 		initialization.setValue(sb.toString());
 		localVariable.replace(initialization);
+		list.add(statement);
 	}
 }
