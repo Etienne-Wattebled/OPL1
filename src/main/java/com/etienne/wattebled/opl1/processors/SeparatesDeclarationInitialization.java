@@ -1,5 +1,7 @@
 package com.etienne.wattebled.opl1.processors;
 
+import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 
 import spoon.processing.AbstractProcessor;
@@ -15,6 +17,12 @@ public class SeparatesDeclarationInitialization extends AbstractProcessor<CtLoca
 	private CtStatement statement;
 	private List<CtElement> elements;
 	
+	private HashMap<String,LinkedList<CtElement>> declarations;
+	
+	public SeparatesDeclarationInitialization() {
+		declarations = new HashMap<String,LinkedList<CtElement>>();
+	}
+	
 	public boolean isToBeProcessed(CtLocalVariable<?> localVariable) {
 		statement = CtElementUtils.getLastStatement(localVariable);
 		elements = localVariable.getElements(new AllCtElementFilter(localVariable));
@@ -25,18 +33,30 @@ public class SeparatesDeclarationInitialization extends AbstractProcessor<CtLoca
 		return true;
 	}
 	public void process(CtLocalVariable<?> localVariable) {
-		CtCodeSnippetStatement declaration = getFactory().Core().createCodeSnippetStatement();
+		String id = localVariable.getSimpleName();
+		LinkedList<CtElement> list = declarations.get(id);
+		if (list == null) {
+			list = new LinkedList<CtElement>();
+			declarations.put(id,list);
+		}
 		StringBuilder sb = new StringBuilder();
-		sb.append(localVariable.getType());
-		sb.append(" ");
-		sb.append(localVariable.getSimpleName());
-		declaration.setValue(sb.toString());
-		statement.insertBefore(declaration);
+
+		if (!(CtElementUtils.hasAnElementInTheSameBlock(localVariable,list))) {
+			CtCodeSnippetStatement declaration = getFactory().Core().createCodeSnippetStatement();
+			sb.append(localVariable.getType());
+			sb.append(" ");
+			sb.append(localVariable.getSimpleName());
+			declaration.setValue(sb.toString());
+			statement.insertBefore(declaration);
+			list.add(declaration);
+		}
+
 		CtCodeSnippetStatement initialization = getFactory().Core().createCodeSnippetStatement();
 		sb = new StringBuilder();
 		sb.append(localVariable.getSimpleName());
 		sb.append(" = ");
 		sb.append(localVariable.getDefaultExpression());
+		
 		initialization.setValue(sb.toString());
 		localVariable.replace(initialization);
 	}

@@ -1,6 +1,9 @@
 package com.etienne.wattebled.opl1.utils;
 
+import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 import spoon.reflect.code.CtBinaryOperator;
 import spoon.reflect.code.CtBlock;
@@ -42,5 +45,28 @@ public class CtElementUtils {
 	public static boolean canGenerateCodeAround(CtElement element) {
 		CtElement parent = element.getParent();
 		return parent instanceof CtBlock;
+	}
+	public static boolean hasAnElementInTheSameBlock(CtElement element,LinkedList<CtElement> elements) {
+		LinkedList<CtBlock<?>> list = getAllCtBlockParent(element);
+		Set<CtBlock<?>> s = new HashSet<CtBlock<?>>();
+		for (CtElement e : elements) {
+			s.addAll(getAllCtBlockParent(e));
+		}
+
+		for (CtElement e : list) {
+			if (s.contains(e)) {
+				return true;
+			}
+		}
+		return false;
+	}
+	public static LinkedList<CtBlock<?>> getAllCtBlockParent(CtElement element) {
+		LinkedList<CtBlock<?>> result = new LinkedList<CtBlock<?>>();
+		CtBlock<?> parent = null;
+		while ((parent = element.getParent(CtBlock.class)) != null) {
+			result.add(parent);
+			element = parent;
+		}
+		return result;
 	}
 }
