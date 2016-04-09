@@ -63,8 +63,8 @@ public class CtElementUtils {
 	}
 	public static LinkedList<CtBlock<?>> getAllCtBlockParent(CtElement element) {
 		LinkedList<CtBlock<?>> result = new LinkedList<CtBlock<?>>();
-		CtElement parent = null;
-		while (((parent = element.getParent()) != null) && (!(parent instanceof CtMethod))) {
+		CtElement parent = element;
+		while ((parent.isParentInitialized() && (parent = element.getParent()) != null) && (!(parent instanceof CtMethod))) {
 			if (parent instanceof CtBlock) {
 				result.add((CtBlock<?>)parent);
 			}
