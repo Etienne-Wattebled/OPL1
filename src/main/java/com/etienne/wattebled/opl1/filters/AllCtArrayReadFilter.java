@@ -5,10 +5,10 @@ import spoon.reflect.code.CtArrayRead;
 import spoon.reflect.declaration.CtElement;
 import spoon.reflect.visitor.Filter;
 
-public class AllCtArrayRead implements Filter<CtArrayRead<?>> {
+public class AllCtArrayReadFilter implements Filter<CtArrayRead<?>> {
 	private CtElement parent;
 	
-	public AllCtArrayRead(CtElement parent) {
+	public AllCtArrayReadFilter(CtElement parent) {
 		this.parent = parent;
 	}
 	public boolean matches(CtArrayRead<?> element) {
